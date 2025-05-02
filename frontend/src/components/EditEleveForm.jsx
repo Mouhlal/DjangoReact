@@ -1,9 +1,18 @@
+// src/components/EditEleveForm.jsx
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getFilieres, getGroupes, addEleve } from '../api/api';
+import { useParams, useNavigate }       from 'react-router-dom';
+import {
+  getEleves,
+  updateEleve,
+  getFilieres,
+  getGroupes
+} from '../api/api';
 
-export default function AddEleveForm({ onAdd }) {
-  const navigate = useNavigate();
+export default function EditEleveForm({ onEdit }) {
+  const { id }       = useParams();
+  const navigate     = useNavigate();
+
+  // États locaux
   const [nom, setNom]               = useState('');
   const [prenom, setPrenom]         = useState('');
   const [emailParent, setEmailParent] = useState('');
@@ -11,32 +20,46 @@ export default function AddEleveForm({ onAdd }) {
   const [groupeId, setGroupeId]     = useState('');
   const [filieres, setFilieres]     = useState([]);
   const [groupes, setGroupes]       = useState([]);
+  const [loading, setLoading]       = useState(true);
 
-  // 1) Charger les filières au montage
+  // 1) Charger toutes les filières au montage
   useEffect(() => {
     getFilieres()
       .then(res => setFilieres(res.data))
-      .catch(err => console.error('Erreur filières :', err));
+      .catch(err => console.error('Erreur chargement filières :', err));
   }, []);
 
-  // 2) À chaque changement de filière, recharger les groupes associés
+  // 2) Charger l'élève et préremplir nom/prénom/email et filière
   useEffect(() => {
-    if (filiereId) {
-      getGroupes(filiereId)
-        .then(res => setGroupes(res.data))
-        .catch(err => console.error('Erreur groupes filtrés :', err));
-    } else {
+    if (!filieres.length) return; // attendre filières si besoin
+    getEleves(id)
+      .then(res => {
+        const e = res.data;
+        setNom(e.nom);
+        setPrenom(e.prenom);
+        setEmailParent(e.email_parent);
+        setFiliereId(String(e.filiere));
+      })
+      .catch(err => console.error('Erreur chargement élève :', err))
+      .finally(() => setLoading(false));
+  }, [id, filieres]);
+
+  // 3) Charger les groupes dès que la filière est connue
+  useEffect(() => {
+    if (!filiereId) {
       setGroupes([]);
+      return;
     }
+    getGroupes(filiereId)
+      .then(res => setGroupes(res.data))
+      .catch(err => console.error('Erreur chargement groupes :', err));
   }, [filiereId]);
 
-  // 3) Soumettre le formulaire
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!filiereId || !groupeId) {
       return alert('Veuillez choisir une filière et un groupe.');
     }
-
     const payload = {
       nom,
       prenom,
@@ -44,39 +67,44 @@ export default function AddEleveForm({ onAdd }) {
       filiere: parseInt(filiereId, 10),
       groupe:  parseInt(groupeId, 10),
     };
-
     try {
-      await addEleve(payload);
-      onAdd();       
-      navigate('/'); 
+      await updateEleve(id, payload);
+      onEdit?.();
+      navigate('/');
     } catch (err) {
-      console.error('Erreur ajout élève :', err.response?.data || err.message);
-      navigate('/'); 
-
+      console.error('Erreur modification :', err.response?.data || err.message);
+      alert('Échec de la modification');
     }
   };
 
+  if (loading) {
+    return <p>Chargement des données…</p>;
+  }
+
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Ajouter un Élève</h2>
+      <h2>Modifier Élève</h2>
 
       <label>Nom :</label>
       <input
-        type="text" value={nom}
+        type="text"
+        value={nom}
         onChange={e => setNom(e.target.value)}
         required
       />
 
       <label>Prénom :</label>
       <input
-        type="text" value={prenom}
+        type="text"
+        value={prenom}
         onChange={e => setPrenom(e.target.value)}
         required
       />
 
       <label>Email du parent :</label>
       <input
-        type="email" value={emailParent}
+        type="email"
+        value={emailParent}
         onChange={e => setEmailParent(e.target.value)}
         required
       />
@@ -87,7 +115,7 @@ export default function AddEleveForm({ onAdd }) {
         onChange={e => setFiliereId(e.target.value)}
         required
       >
-        <option value="">-- Sélectionner --</option>
+        <option value="">-- Sélectionner une filière --</option>
         {filieres.map(f => (
           <option key={f.id} value={f.id}>{f.filiere}</option>
         ))}
@@ -100,13 +128,13 @@ export default function AddEleveForm({ onAdd }) {
         required
         disabled={!groupes.length}
       >
-        <option value="">-- Sélectionner --</option>
+        <option value="">-- Sélectionner un groupe --</option>
         {groupes.map(g => (
           <option key={g.id} value={g.id}>{g.groupeName}</option>
         ))}
       </select>
 
-      <button type="submit">Ajouter</button>
+      <button type="submit">Enregistrer</button>
     </form>
   );
 }

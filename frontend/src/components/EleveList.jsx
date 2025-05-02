@@ -33,25 +33,32 @@ export default function EleveList() {
       </Link>
 
       <ul>
-        {eleves.map(e => (
-          <li key={e.id} style={{ marginBottom: '0.5rem' }}>
-            {e.nom} {e.prenom}
-            <button
-              onClick={() => handleDelete(e.id)}
-              style={{
-                marginLeft: '1rem',
-                color: 'white',
-                background: 'red',
-                border: 'none',
-                padding: '0.2rem 0.5rem',
-                borderRadius: '4px'
-              }}
-            >
-              Supprimer
-            </button>
-          </li>
-        ))}
-      </ul>
+  {eleves.map(e => (
+    <li key={e.id} style={{ marginBottom: '0.5rem' }}>
+      {e.nom} {e.prenom} —  
+      Groupe : {e.groupe_name} —  
+      Filière : {e.filiere_name}
+
+      <Link to={`/modifier-eleve/${e.id}`}>
+        <button style={{ marginLeft: '1rem' }}>Modifier</button>
+      </Link>
+      <button
+        onClick={() => handleDelete(e.id)}
+        style={{
+          marginLeft: '0.5rem',
+          color: 'white',
+          background: 'red',
+          border: 'none',
+          padding: '0.2rem 0.5rem',
+          borderRadius: '4px'
+        }}
+      >
+        Supprimer
+      </button>
+    </li>
+  ))}
+</ul>
+
     </div>
   );
 }

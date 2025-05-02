@@ -12,14 +12,18 @@ class GroupeSerializer(serializers.ModelSerializer):
         fields = ['id', 'groupeName', 'filiere']
 
 class EleveSerializer(serializers.ModelSerializer):
-    # on écrit via les PK et on lit aussi les infos
-    filiere = serializers.PrimaryKeyRelatedField(queryset=Etude.objects.all())
-    groupe  = serializers.PrimaryKeyRelatedField(queryset=Groupe.objects.all())
+    # Lit la colonne "filiere" et "groupe" de l'objet lié Etude et Groupe
+    filiere_name = serializers.CharField(source='filiere.filiere', read_only=True)
+    groupe_name  = serializers.CharField(source='groupe.groupeName', read_only=True)
 
     class Meta:
         model  = Eleve
-        fields = ['id', 'nom', 'prenom', 'email_parent', 'filiere', 'groupe']
-
+        fields = [
+            'id', 'nom', 'prenom', 'email_parent',
+            'filiere', 'groupe',
+            'filiere_name', 'groupe_name'
+        ]
+        
 class PresenceSerializer(serializers.ModelSerializer):
     class Meta:
         model  = Presence
