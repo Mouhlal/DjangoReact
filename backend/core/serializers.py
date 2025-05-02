@@ -27,7 +27,7 @@ class EleveSerializer(serializers.ModelSerializer):
 class PresenceSerializer(serializers.ModelSerializer):
     class Meta:
         model  = Presence
-        fields = ['id', 'eleve', 'matiere', 'date', 'present', 'sceance']
+        fields = ['eleve', 'matiere', 'date', 'present', 'sceance']
 
 class AlerteAbsenceSerializer(serializers.ModelSerializer):
     class Meta:
