@@ -13,4 +13,5 @@ export const getGroupes   = (filiereId) => {
       ? `groupes/?filiere_id=${filiereId}`
       : 'groupes/';
     return API.get(url);
-  };export const addEleve    = (eleveData) => API.post('eleves/', eleveData);
+  };
+export const addEleve    = (eleveData) => API.post('eleves/', eleveData); 

@@ -29,6 +29,21 @@ class PresenceViewSet(viewsets.ModelViewSet):
     queryset = Presence.objects.all()
     serializer_class = PresenceSerializer
 
+    def perform_create(self, serializer):
+        instance = serializer.save()
+
+        # Vérifie s’il faut déclencher une alerte
+        eleve = instance.eleve
+        absences = Presence.objects.filter(eleve=eleve, present=False).count()
+        SEUIL = 3  # seuil d'absences avant alerte
+
+        if absences >= SEUIL:
+            AlerteAbsence.objects.update_or_create(
+                eleve=eleve,
+                date=instance.date,
+                defaults={'nbr_absences': absences}
+            )
+
 class AlerteAbsenceViewSet(viewsets.ModelViewSet):
     queryset = AlerteAbsence.objects.all()
     serializer_class = AlerteAbsenceSerializer
@@ -40,3 +55,4 @@ class NotificationViewSet(viewsets.ModelViewSet):
 class RapportPDFViewSet(viewsets.ModelViewSet):
     queryset = RapportPDF.objects.all()
     serializer_class = RapportPDFSerializer
+

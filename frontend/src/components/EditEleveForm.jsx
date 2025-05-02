@@ -12,7 +12,6 @@ export default function EditEleveForm({ onEdit }) {
   const { id }       = useParams();
   const navigate     = useNavigate();
 
-  // États locaux
   const [nom, setNom]               = useState('');
   const [prenom, setPrenom]         = useState('');
   const [emailParent, setEmailParent] = useState('');
@@ -22,16 +21,14 @@ export default function EditEleveForm({ onEdit }) {
   const [groupes, setGroupes]       = useState([]);
   const [loading, setLoading]       = useState(true);
 
-  // 1) Charger toutes les filières au montage
   useEffect(() => {
     getFilieres()
       .then(res => setFilieres(res.data))
       .catch(err => console.error('Erreur chargement filières :', err));
   }, []);
 
-  // 2) Charger l'élève et préremplir nom/prénom/email et filière
   useEffect(() => {
-    if (!filieres.length) return; // attendre filières si besoin
+    if (!filieres.length) return;
     getEleves(id)
       .then(res => {
         const e = res.data;

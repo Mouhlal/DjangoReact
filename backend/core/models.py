@@ -38,14 +38,14 @@ class Presence(models.Model):
     eleve = models.ForeignKey(Eleve, on_delete=models.CASCADE, related_name='presences')
     matiere = models.ForeignKey(Matiere, on_delete=models.CASCADE, related_name='presences')
     date = models.DateField()
+    sceance = models.CharField(max_length=100)
     present = models.BooleanField()
 
     class Meta:
-        unique_together = ('eleve', 'matiere', 'date')
+        unique_together = ('eleve', 'matiere', 'date', 'sceance')
 
     def __str__(self):
-        return f"{self.date} - {self.matiere.nom} - {self.eleve.nom} {self.eleve.prenom} - {'Présent' if self.present else 'Absent'}"
-
+        return f"{self.eleve.nom} {self.eleve.prenom} - {self.matiere.nom} - {self.date} - {'Présent' if self.present else 'Absent'}"
 
 class AlerteAbsence(models.Model):
     eleve = models.ForeignKey(Eleve, on_delete=models.CASCADE, related_name='alertes')
