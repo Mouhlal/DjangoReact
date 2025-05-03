@@ -9,9 +9,21 @@ export const deleteEleve = (id)   => API.delete(`eleves/${id}/`);
 export const getFilieres = () => API.get('etudes/');
 export const getGroupes   = (filiereId) => {
     // si filiereId n'est pas passé, renvoie tous les groupes
-    const url = filiereId
-      ? `groupes/?filiere_id=${filiereId}`
-      : 'groupes/';
+    const url = filiereId ? `groupes/?filiere_id=${filiereId}` : 'groupes/';
     return API.get(url);
   };
 export const addEleve    = (eleveData) => API.post('eleves/', eleveData); 
+export const getMatieres = (filiereId) => {
+  const url = filiereId
+    ? `matieres/?filiere_id=${filiereId}`
+    : 'matieres/';
+  return API.get(url);
+};
+
+
+export const getPresences = (eleveId) => API.get(`presences/?eleve=${eleveId}`);
+export const addPresence = (data) => API.post('presences/', data);
+export const getAlertes = (eleveId) => API.get(`alertes/?eleve=${eleveId}`);
+export const deleteAlerte   = (id)      => API.delete(`alertes/${id}/`);
+export const getAllAlertes  = ()        => API.get('alertes/'); 
+export const getEleveDetail = (eleveId) => API.get(`eleves/${eleveId}/`);

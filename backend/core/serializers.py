@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Eleve, Etude, Groupe, Presence, AlerteAbsence, Notification, RapportPDF
+from .models import Eleve, Etude, Groupe, Presence, AlerteAbsence, Notification, RapportPDF , Matiere
 
 class EtudeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -23,12 +23,31 @@ class EleveSerializer(serializers.ModelSerializer):
             'filiere', 'groupe',
             'filiere_name', 'groupe_name'
         ]
-        
-class PresenceSerializer(serializers.ModelSerializer):
+class MatiereSerializer(serializers.ModelSerializer):
     class Meta:
-        model  = Presence
-        fields = ['eleve', 'matiere', 'date', 'present', 'sceance']
+        model = Matiere
+        fields = ['id', 'nom','filiere',]
+        depth = 1  # <— permet de renvoyer matiere comme objet complet
 
+class PresenceSerializer(serializers.ModelSerializer):
+    matiere = MatiereSerializer(read_only=True)
+    matiere_id = serializers.PrimaryKeyRelatedField(
+        queryset=Matiere.objects.all(),
+        source='matiere',
+        write_only=True
+    )
+
+    class Meta:
+        model = Presence
+        fields = [
+            'id',
+            'eleve',
+            'matiere',     # nested read-only
+            'matiere_id',  # write-only
+            'date',
+            'sceance',
+            'present'
+        ]
 class AlerteAbsenceSerializer(serializers.ModelSerializer):
     class Meta:
         model  = AlerteAbsence
@@ -43,3 +62,4 @@ class RapportPDFSerializer(serializers.ModelSerializer):
     class Meta:
         model  = RapportPDF
         fields = ['id', 'eleve', 'date', 'message', 'date_envoi']
+

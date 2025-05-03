@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getFilieres, getGroupes, addEleve } from '../api/api';
+import { getFilieres, getGroupes, addEleve } from '../../api/api';
 
 export default function AddEleveForm({ onAdd }) {
   const navigate = useNavigate();

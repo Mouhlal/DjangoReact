@@ -6,7 +6,7 @@ import {
   updateEleve,
   getFilieres,
   getGroupes
-} from '../api/api';
+} from '../../api/api';
 
 export default function EditEleveForm({ onEdit }) {
   const { id }       = useParams();
