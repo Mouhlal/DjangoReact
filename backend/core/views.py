@@ -32,8 +32,28 @@ class EleveViewSet(viewsets.ModelViewSet):
     serializer_class = EleveSerializer
 
 class PresenceViewSet(viewsets.ModelViewSet):
-    queryset = Presence.objects.all()
     serializer_class = PresenceSerializer
+    queryset = Presence.objects.all()
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        params = self.request.query_params
+
+        # Filtrer par élève si présent
+        eleve_id = params.get('eleve')
+        if eleve_id:
+            qs = qs.filter(eleve_id=eleve_id)
+
+        # Filtrer par présent/absent si présent
+        present = params.get('present')
+        if present is not None:
+            val = present.lower()
+            if val in ('true', '1', 'yes'):
+                qs = qs.filter(present=True)
+            elif val in ('false', '0', 'no'):
+                qs = qs.filter(present=False)
+
+        return qs
 
     def perform_create(self, serializer):
         presence = serializer.save()
@@ -48,13 +68,13 @@ class PresenceViewSet(viewsets.ModelViewSet):
             ).count()
 
             if abs_count >= 3:
-                # Crée ou met à jour l'alerte
+                # Créer ou mettre à jour l'alerte
                 AlerteAbsence.objects.update_or_create(
                     eleve=presence.eleve,
                     date=presence.date,
                     defaults={'nbr_absences': abs_count}
                 )
-                # Crée une notification
+                # Créer une notification
                 Notification.objects.create(
                     eleve=presence.eleve,
                     message=(
@@ -76,6 +96,13 @@ class AlerteAbsenceViewSet(viewsets.ModelViewSet):
 class NotificationViewSet(viewsets.ModelViewSet):
     queryset = Notification.objects.all()
     serializer_class = NotificationSerializer
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        eleve_id = self.request.query_params.get('eleve')
+        if eleve_id is not None:
+            qs = qs.filter(eleve_id=eleve_id)
+        return qs
 
 class RapportPDFViewSet(viewsets.ModelViewSet):
     queryset = RapportPDF.objects.all()

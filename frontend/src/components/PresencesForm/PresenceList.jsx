@@ -1,54 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { getPresences, getAlertes } from '../../api/api';
+import React, { useEffect, useState } from 'react';
+import { getAllPresences } from '../../api/api';
+import { Link } from 'react-router-dom';
 
 export default function PresenceList() {
-  const { id: eleveId } = useParams();
   const [presences, setPresences] = useState([]);
-  const [alertes, setAlertes]     = useState([]);
 
   useEffect(() => {
-    getPresences(eleveId)
+    getAllPresences()
       .then(res => setPresences(res.data))
       .catch(err => console.error('Erreur présences :', err));
-
-    getAlertes(eleveId)
-      .then(res => setAlertes(res.data))
-      .catch(err => console.error('Erreur alertes :', err));
-  }, [eleveId]);
+  }, []);
 
   return (
     <div>
-      <h2>Alertes d'Absence</h2>
-      {alertes.length
-        ? <ul>
-            {alertes.map(a => (
-              <li key={a.id}>
-                {a.date} – {a.nbr_absences} absences
-              </li>
-            ))}
-          </ul>
-        : <p>Aucune alerte.</p>
-      }
-
-      <h2>Présences</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Matière</th><th>Date</th><th>Séance</th><th>Présent</th>
-          </tr>
-        </thead>
-        <tbody>
-          {presences.map(p => (
-            <tr key={p.id}>
-              <td>{p.matiere.nom}</td>
-              <td>{p.date}</td>
-              <td>{p.sceance}</td>
-              <td>{p.present ? 'Oui' : 'Non'}</td>
+      <h2>Toutes les présences</h2>
+      {presences.length === 0 ? (
+        <p>Aucune présence enregistrée.</p>
+      ) : (
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Élève</th>
+              <th>Matière</th>
+              <th>Date</th>
+              <th>Séance</th>
+              <th>Présent</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {presences.map(p => (
+              <tr key={p.id}>
+                <td>{p.eleve.nom} {p.eleve.prenom}</td>
+                <td>{p.matiere.nom}</td>
+                <td>{p.date}</td>
+                <td>{p.sceance}</td>
+                <td>{p.present ? 'Oui' : 'Non'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      <Link to="/">← Retour</Link>
     </div>
   );
 }

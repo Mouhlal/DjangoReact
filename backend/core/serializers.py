@@ -30,7 +30,18 @@ class MatiereSerializer(serializers.ModelSerializer):
         depth = 1  # <— permet de renvoyer matiere comme objet complet
 
 class PresenceSerializer(serializers.ModelSerializer):
+    # Objet élève complet (lecture seule)
+    eleve = EleveSerializer(read_only=True)
+    # Pour l’écriture, on accepte eleve_id
+    eleve_id = serializers.PrimaryKeyRelatedField(
+        queryset=Eleve.objects.all(),
+        source='eleve',
+        write_only=True
+    )
+
+    # Objet matière complet (lecture seule)
     matiere = MatiereSerializer(read_only=True)
+    # Pour l’écriture, on accepte matiere_id
     matiere_id = serializers.PrimaryKeyRelatedField(
         queryset=Matiere.objects.all(),
         source='matiere',
@@ -41,13 +52,13 @@ class PresenceSerializer(serializers.ModelSerializer):
         model = Presence
         fields = [
             'id',
-            'eleve',
-            'matiere',     # nested read-only
-            'matiere_id',  # write-only
+            'eleve',    'eleve_id',
+            'matiere',  'matiere_id',
             'date',
             'sceance',
-            'present'
+            'present',
         ]
+
 class AlerteAbsenceSerializer(serializers.ModelSerializer):
     class Meta:
         model  = AlerteAbsence
