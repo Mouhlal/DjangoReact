@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAllPresences } from '../../api/api';
+import { deletePresence, getAllPresences, getPresences } from '../../api/api';
 import { Link } from 'react-router-dom';
 
 export default function PresenceList() {
@@ -11,6 +11,18 @@ export default function PresenceList() {
       .catch(err => console.error('Erreur présences :', err));
   }, []);
 
+  const handleDelete = async (id) => {
+    if (!window.confirm('Voulez-vous vraiment supprimer cette présence ?')) return;
+    try {
+      await deletePresence(id);
+      getAllPresences();
+      setPresences(presences.filter(p => p.id !== id));
+      alert('Présence supprimée avec succès.');
+    } catch (err) {
+      alert('Impossible de supprimer cette présence.');
+    }
+  }
+  
   return (
     <div>
       <h2>Toutes les présences</h2>
@@ -25,6 +37,7 @@ export default function PresenceList() {
               <th>Date</th>
               <th>Séance</th>
               <th>Présent</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -35,6 +48,9 @@ export default function PresenceList() {
                 <td>{p.date}</td>
                 <td>{p.sceance}</td>
                 <td>{p.present ? 'Oui' : 'Non'}</td>
+                <td>
+                  <button onClick={() => handleDelete(p.id)}>Supprimer</button>
+                </td>
               </tr>
             ))}
           </tbody>

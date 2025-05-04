@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import EleveList from './components/ElevesForm/EleveList'
 import AddEleveForm from './components/ElevesForm/AddEleveForm'
@@ -10,11 +10,26 @@ import AlerteList from './components/AlertesForm/AlertesList';
 import AllAlerts from './components/AlertesForm/AllAlerts';
 import AllNotifications from './components/Notifications/AllNotifications';
 import NotificationList from './components/Notifications/Notification';
+import Header from './layouts/Header';
+import Footer from './layouts/Footer';
+import Home from './layouts/Home';
 export default function App() {
+    useEffect(() => {
+      const script = document.createElement('script');
+      script.src = `${process.env.PUBLIC_URL}/assets/js/main.js`;
+      script.async = true;
+      document.body.appendChild(script);
+  
+      return () => {
+        // Nettoyage si nécessaire
+        document.body.removeChild(script);
+      };
+    }, []);
   return (
     <BrowserRouter>
+      <Header />
       <Routes>
-        <Route path="/" element={<EleveList />} />
+        <Route path="/eleves" element={<EleveList />} />
         <Route path="ajouter-eleve/" element={<AddEleveForm />} />
         <Route path="/modifier-eleve/:id" element={<EditEleveForm />} />
         <Route path="/eleve/:id" element={<EleveDetails />} />
@@ -28,12 +43,13 @@ export default function App() {
 
         <Route path='/notifications' element={<AllNotifications />} />
         <Route path="/eleve/:id/notifications" element={<NotificationList />} />    
-
+      
         <Route path="*" element={<h1>Page non trouvée</h1>} />
-
-
+        <Route path="/" element={<Home />} />
 
       </Routes>
+      <Footer />
     </BrowserRouter>
   )
 }
+

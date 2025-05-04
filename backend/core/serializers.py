@@ -15,7 +15,7 @@ class EleveSerializer(serializers.ModelSerializer):
     # Lit la colonne "filiere" et "groupe" de l'objet lié Etude et Groupe
     filiere_name = serializers.CharField(source='filiere.filiere', read_only=True)
     groupe_name  = serializers.CharField(source='groupe.groupeName', read_only=True)
-
+    
     class Meta:
         model  = Eleve
         fields = [

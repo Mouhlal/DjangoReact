@@ -25,6 +25,7 @@ export const getMatieres = (filiereId) => {
 export const getPresences = (eleveId) => API.get(`presences/?eleve=${eleveId}`);
 export const addPresence = (data) => API.post('presences/', data);
 export const getAllPresences = () => API.get('presences/');
+export const deletePresence = (id) => API.delete(`presences/${id}/`);
 
 export const getAlertes = (eleveId) => API.get(`alertes/?eleve=${eleveId}`);
 export const deleteAlerte   = (id)      => API.delete(`alertes/${id}/`);
@@ -34,3 +35,4 @@ export const getAllAlertes  = ()        => API.get('alertes/');
 export const getNotifications    = (eleveId) => API.get(`notifications/?eleve=${eleveId}`);
 export const deleteNotification  = (id)      => API.delete(`notifications/${id}/`);
 export const getAllNotifications = ()        => API.get('notifications/');
+
