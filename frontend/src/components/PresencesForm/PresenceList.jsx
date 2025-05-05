@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { deletePresence, getAllPresences, getPresences } from '../../api/api';
+import { deletePresence, getAllPresences } from '../../api/api';
 import { Link } from 'react-router-dom';
 
 export default function PresenceList() {
@@ -15,21 +15,20 @@ export default function PresenceList() {
     if (!window.confirm('Voulez-vous vraiment supprimer cette présence ?')) return;
     try {
       await deletePresence(id);
-      getAllPresences();
       setPresences(presences.filter(p => p.id !== id));
       alert('Présence supprimée avec succès.');
     } catch (err) {
       alert('Impossible de supprimer cette présence.');
     }
-  }
-  
+  };
+
   return (
-    <div>
+    <div className="container mt-5">
       <h2>Toutes les présences</h2>
       {presences.length === 0 ? (
         <p>Aucune présence enregistrée.</p>
       ) : (
-        <table className="table">
+        <table className="table table-striped">
           <thead>
             <tr>
               <th>Élève</th>
@@ -45,18 +44,23 @@ export default function PresenceList() {
               <tr key={p.id}>
                 <td>{p.eleve.nom} {p.eleve.prenom}</td>
                 <td>{p.matiere.nom}</td>
-                <td>{p.date}</td>
+                <td>{new Date(p.date).toLocaleDateString()}</td>
                 <td>{p.sceance}</td>
                 <td>{p.present ? 'Oui' : 'Non'}</td>
                 <td>
-                  <button onClick={() => handleDelete(p.id)}>Supprimer</button>
+                  <button
+                    onClick={() => handleDelete(p.id)}
+                    className="btn btn-danger btn-sm"
+                  >
+                    Supprimer
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       )}
-      <Link to="/">← Retour</Link>
+      <Link to="/eleves" className="btn btn-secondary mt-3">← Retour</Link>
     </div>
   );
 }

@@ -27,31 +27,27 @@ export default function NotificationList() {
   };
 
   return (
-    <div>
-      <h2>Notifications de l’élève</h2>
+    <div className="container mt-5">
+      <h2 className="mb-4">Notifications de l’élève</h2>
+      
       {notifs.length === 0 ? (
         <p>Aucune notification pour cet élève.</p>
       ) : (
-        <ul>
+        <div className="list-group">
           {notifs.map(n => (
-            <li key={n.id} style={{ marginBottom: '0.5rem' }}>
-              <strong>{new Date(n.date).toLocaleString()}</strong> — {n.message}
+            <div key={n.id} className="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                <strong>{new Date(n.date).toLocaleString()}</strong> — {n.message}
+              </div>
               <button
                 onClick={() => handleDelete(n.id)}
-                style={{
-                  marginLeft: '1rem',
-                  color: 'white',
-                  background: 'red',
-                  border: 'none',
-                  padding: '0.2rem 0.5rem',
-                  borderRadius: '4px'
-                }}
+                className="btn btn-danger btn-sm"
               >
                 Supprimer
               </button>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );

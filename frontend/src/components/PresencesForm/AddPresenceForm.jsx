@@ -8,10 +8,10 @@ export default function AddPresenceForm({ onPresenceAdded = () => {} }) {
 
   const [matieres, setMatieres] = useState([]);
   const [matiereId, setMatiereId] = useState('');
-  const [sceance, setSceance]   = useState('');
-  const [date, setDate]         = useState('');
-  const [present, setPresent]   = useState(false);
-  const [loading, setLoading]   = useState(true);
+  const [sceance, setSceance] = useState('');
+  const [date, setDate] = useState('');
+  const [present, setPresent] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let filiereId;
@@ -30,12 +30,13 @@ export default function AddPresenceForm({ onPresenceAdded = () => {} }) {
     setLoading(true);
 
     const payload = {
-      eleve:    parseInt(eleveId, 10),
-      matiere_id: parseInt(matiereId, 10),  // clé write-only
+      eleve_id: parseInt(eleveId, 10),  
+      matiere_id: parseInt(matiereId, 10),
       sceance,
       date,
       present
     };
+    
 
     try {
       await addPresence(payload);
@@ -55,47 +56,61 @@ export default function AddPresenceForm({ onPresenceAdded = () => {} }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <div className="container mt-5">
       <h2>Ajouter une Présence</h2>
 
-      <label>Matière :</label>
-      <select
-        value={matiereId}
-        onChange={e => setMatiereId(e.target.value)}
-        required
-      >
-        <option value="">-- Sélectionner --</option>
-        {matieres.map(m => (
-          <option key={m.id} value={m.id}>{m.nom}</option>
-        ))}
-      </select>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label className="form-label">Matière :</label>
+          <select
+            className="form-select"
+            value={matiereId}
+            onChange={e => setMatiereId(e.target.value)}
+            required
+          >
+            <option value="">-- Sélectionner --</option>
+            {matieres.map(m => (
+              <option key={m.id} value={m.id}>{m.nom}</option>
+            ))}
+          </select>
+        </div>
 
-      <label>Séance :</label>
-      <input
-        type="text"
-        value={sceance}
-        onChange={e => setSceance(e.target.value.toUpperCase())}
-        required
-      />
+        <div className="mb-3">
+          <label className="form-label">Séance :</label>
+          <input
+            type="text"
+            className="form-control"
+            value={sceance}
+            onChange={e => setSceance(e.target.value.toUpperCase())}
+            required
+          />
+        </div>
 
-      <label>Date :</label>
-      <input
-        type="date"
-        value={date}
-        onChange={e => setDate(e.target.value)}
-        required
-      />
+        <div className="mb-3">
+          <label className="form-label">Date :</label>
+          <input
+            type="date"
+            className="form-control"
+            value={date}
+            onChange={e => setDate(e.target.value)}
+            required
+          />
+        </div>
 
-      <label>Présent :</label>
-      <input
-        type="checkbox"
-        checked={present}
-        onChange={() => setPresent(p => !p)}
-      />
+        <div className="mb-3 form-check">
+          <input
+            type="checkbox"
+            className="form-check-input"
+            checked={present}
+            onChange={() => setPresent(p => !p)}
+          />
+          <label className="form-check-label">Présent</label>
+        </div>
 
-      <button type="submit" disabled={loading}>
-        {loading ? 'Enregistrement...' : 'Enregistrer'}
-      </button>
-    </form>
+        <button type="submit" className="btn btn-primary" disabled={loading}>
+          {loading ? 'Enregistrement...' : 'Enregistrer'}
+        </button>
+      </form>
+    </div>
   );
 }

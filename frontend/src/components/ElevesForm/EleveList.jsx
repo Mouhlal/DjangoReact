@@ -25,62 +25,55 @@ export default function EleveList() {
   };
 
   return (
-    <div>
-      <h2>Liste des élèves</h2>
-      <Link to="/ajouter-eleve">
-        <button>Ajouter un élève</button>
-      </Link>
+    <div className="container mt-4">
+      <div className="d-flex justify-content-between align-items-center mb-3">
+{/*         <h2>Liste des élèves</h2>
+ */}        <Link to="/ajouter-eleve" className="btn btn-primary">Ajouter un élève</Link>
+      </div>
 
-      <Link to="/presences">
-        <button>Toutes les Presences</button>
-      </Link>
-      <Link to="/notifications">
-        <button>Toutes les notifications</button>
-      </Link>
+      <div className="mb-3">
+        <Link to="/presences" className="btn btn-secondary me-2">Toutes les Présences</Link>
+        <Link to="/notifications" className="btn btn-secondary me-2">Toutes les Notifications</Link>
+        <Link to="/alertes" className="btn btn-secondary">Toutes les Alertes</Link>
+      </div>
 
-      <Link to="/alertes">
-        <button>Toutes les alertes</button>
-      </Link>
-
-      <ul>
-        {eleves.map(e => (
-          <li key={e.id} style={{ marginBottom: '0.5rem' }}>
-            {e.nom} {e.prenom} —  
-            Groupe : {e.groupe_name} —  
-            Filière : {e.filiere_name}
-
-            <Link to={`/eleve/${e.id}/alertes`}>
-              <button style={{ marginLeft: '1rem' }}>Alertes</button>
-            </Link>
-
-            <Link to={`/eleve/${e.id}/notifications`}>
-              <button>Notifications</button>
-            </Link>
-
-            <Link to={`/eleve/${e.id}`}>
-              <button style={{ marginLeft: '0.5rem' }}>Détails</button>
-            </Link>
-
-            <Link to={`/modifier-eleve/${e.id}`}>
-              <button style={{ marginLeft: '0.5rem' }}>Modifier</button>
-            </Link>
-
-            <button
-              onClick={() => handleDelete(e.id)}
-              style={{
-                marginLeft: '0.5rem',
-                color: 'white',
-                background: 'red',
-                border: 'none',
-                padding: '0.2rem 0.5rem',
-                borderRadius: '4px'
-              }}
-            >
-              Supprimer
-            </button>
-          </li>
-        ))}
-      </ul>
+      <div className="table-responsive">
+        <table className="table table-striped table-bordered align-middle table-hover">
+          <thead className="table-dark">
+            <tr>
+              <th>#</th>
+              <th>Nom</th>
+              <th>Prénom</th>
+              <th>Groupe</th>
+              <th>Filière</th>
+              <th className="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {eleves.map(e => (
+              <tr key={e.id}>
+                 <td>{e.id}</td>
+                <td>{e.nom}</td>
+                <td>{e.prenom}</td>
+                <td>{e.groupe_name}</td>
+                <td>{e.filiere_name}</td>
+                <td className="text-center">
+                  <Link to={`/eleve/${e.id}/alertes`} className="btn btn-warning btn-sm me-1">Alertes</Link>
+                  <Link to={`/eleve/${e.id}/notifications`} className="btn btn-info btn-sm me-1 text-white">Notifications</Link>
+                  <Link to={`/eleve/${e.id}`} className="btn btn-primary btn-sm me-1">Détails</Link>
+                  <Link to={`/modifier-eleve/${e.id}`} className="btn btn-success btn-sm me-1">Modifier</Link>
+                  <button
+                    onClick={() => handleDelete(e.id)}
+                    className="btn btn-danger btn-sm"
+                  >
+                    Supprimer
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

@@ -4,33 +4,30 @@ import { getFilieres, getGroupes, addEleve } from '../../api/api';
 
 export default function AddEleveForm({ onAdd }) {
   const navigate = useNavigate();
-  const [nom, setNom]               = useState('');
-  const [prenom, setPrenom]         = useState('');
+  const [nom, setNom] = useState('');
+  const [prenom, setPrenom] = useState('');
   const [emailParent, setEmailParent] = useState('');
-  const [filiereId, setFiliereId]   = useState('');
-  const [groupeId, setGroupeId]     = useState('');
-  const [filieres, setFilieres]     = useState([]);
-  const [groupes, setGroupes]       = useState([]);
+  const [filiereId, setFiliereId] = useState('');
+  const [groupeId, setGroupeId] = useState('');
+  const [filieres, setFilieres] = useState([]);
+  const [groupes, setGroupes] = useState([]);
 
-  // 1) Charger les filières au montage
   useEffect(() => {
     getFilieres()
       .then(res => setFilieres(res.data))
       .catch(err => console.error('Erreur filières :', err));
   }, []);
 
-  // 2) À chaque changement de filière, recharger les groupes associés
   useEffect(() => {
     if (filiereId) {
       getGroupes(filiereId)
         .then(res => setGroupes(res.data))
-        .catch(err => console.error('Erreur groupes filtrés :', err));
+        .catch(err => console.error('Erreur groupes :', err));
     } else {
       setGroupes([]);
     }
   }, [filiereId]);
 
-  // 3) Soumettre le formulaire
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!filiereId || !groupeId) {
@@ -42,71 +39,101 @@ export default function AddEleveForm({ onAdd }) {
       prenom,
       email_parent: emailParent,
       filiere: parseInt(filiereId, 10),
-      groupe:  parseInt(groupeId, 10),
+      groupe: parseInt(groupeId, 10),
     };
 
     try {
       await addEleve(payload);
-      onAdd();       
-      navigate('/'); 
+      onAdd();
+      navigate('/');
     } catch (err) {
       console.error('Erreur ajout élève :', err.response?.data || err.message);
-      navigate('/'); 
-
+      navigate('/');
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Ajouter un Élève</h2>
+    <div className="container mt-4">
+      <div className="card shadow">
+        <div className="card-header text-center bg-success">
+          <h4 className="mb-0 text-white p-2">Ajouter un Élève</h4>
+        </div>
+        <div className="card-body">
+          <form onSubmit={handleSubmit}>
+            <div className="row mb-3">
+              <div className="col-md-6">
+                <label className="form-label">Nom</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={nom}
+                  onChange={e => setNom(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="col-md-6">
+                <label className="form-label">Prénom</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={prenom}
+                  onChange={e => setPrenom(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
 
-      <label>Nom :</label>
-      <input
-        type="text" value={nom}
-        onChange={e => setNom(e.target.value)}
-        required
-      />
+            <div className="mb-3">
+              <label className="form-label">Email du parent</label>
+              <input
+                type="email"
+                className="form-control"
+                value={emailParent}
+                onChange={e => setEmailParent(e.target.value)}
+                required
+              />
+            </div>
 
-      <label>Prénom :</label>
-      <input
-        type="text" value={prenom}
-        onChange={e => setPrenom(e.target.value)}
-        required
-      />
+            <div className="row mb-3">
+              <div className="col-md-6">
+                <label className="form-label">Filière</label>
+                <select
+                  className="form-select"
+                  value={filiereId}
+                  onChange={e => setFiliereId(e.target.value)}
+                  required
+                >
+                  <option value="">-- Sélectionner --</option>
+                  {filieres.map(f => (
+                    <option key={f.id} value={f.id}>{f.filiere}</option>
+                  ))}
+                </select>
+              </div>
 
-      <label>Email du parent :</label>
-      <input
-        type="email" value={emailParent}
-        onChange={e => setEmailParent(e.target.value)}
-        required
-      />
+              <div className="col-md-6">
+                <label className="form-label">Groupe</label>
+                <select
+                  className="form-select"
+                  value={groupeId}
+                  onChange={e => setGroupeId(e.target.value)}
+                  required
+                  disabled={!groupes.length}
+                >
+                  <option value="">-- Sélectionner --</option>
+                  {groupes.map(g => (
+                    <option key={g.id} value={g.id}>{g.groupeName}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
 
-      <label>Filière :</label>
-      <select
-        value={filiereId}
-        onChange={e => setFiliereId(e.target.value)}
-        required
-      >
-        <option value="">-- Sélectionner --</option>
-        {filieres.map(f => (
-          <option key={f.id} value={f.id}>{f.filiere}</option>
-        ))}
-      </select>
-
-      <label>Groupe :</label>
-      <select
-        value={groupeId}
-        onChange={e => setGroupeId(e.target.value)}
-        required
-        disabled={!groupes.length}
-      >
-        <option value="">-- Sélectionner --</option>
-        {groupes.map(g => (
-          <option key={g.id} value={g.id}>{g.groupeName}</option>
-        ))}
-      </select>
-
-      <button type="submit">Ajouter</button>
-    </form>
+            <div className="text-end">
+              <button type="submit" className="btn btn-success">Ajouter l'élève</button>
+            </div>
+          </form>
+          <br />
+        </div>
+      </div>
+    </div>
   );
 }

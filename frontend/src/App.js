@@ -21,7 +21,6 @@ export default function App() {
       document.body.appendChild(script);
   
       return () => {
-        // Nettoyage si nécessaire
         document.body.removeChild(script);
       };
     }, []);

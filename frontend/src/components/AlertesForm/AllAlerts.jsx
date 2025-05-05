@@ -1,18 +1,20 @@
-// src/components/AllAlerts.jsx
 import React, { useState, useEffect } from 'react';
 import { getAllAlertes, deleteAlerte } from '../../api/api';
 
 export default function AllAlerts() {
   const [alertes, setAlertes] = useState([]);
 
+  // Fonction pour récupérer les alertes
   const fetchAlertes = () => {
     getAllAlertes()
       .then(res => setAlertes(res.data))
       .catch(err => console.error('Erreur récupération alertes :', err));
   };
 
+  // Charger les alertes au montage du composant
   useEffect(fetchAlertes, []);
 
+  // Fonction de suppression d'une alerte
   const handleDelete = async (alerteId) => {
     if (!window.confirm('Supprimer cette alerte ?')) return;
     try {
@@ -25,34 +27,28 @@ export default function AllAlerts() {
   };
 
   return (
-    <div>
-      <h2>Toutes les alertes d’absence</h2>
+    <div className="container mt-5">
+      <h2 className="mb-4">Toutes les alertes d’absence</h2>
 
-      {alertes.length === 0
-        ? <p>Aucune alerte enregistrée.</p>
-        : (
-          <ul>
-            {alertes.map(a => (
-              <li key={a.id} style={{ marginBottom: '0.5rem' }}>
+      {alertes.length === 0 ? (
+        <p>Aucune alerte enregistrée.</p>
+      ) : (
+        <div className="list-group">
+          {alertes.map(a => (
+            <div key={a.id} className="list-group-item d-flex justify-content-between align-items-center">
+              <div>
                 <strong>{a.date}</strong> – {a.nbr_absences} absences
-                <button
-                  onClick={() => handleDelete(a.id)}
-                  style={{
-                    marginLeft: '1rem',
-                    color: 'white',
-                    background: 'red',
-                    border: 'none',
-                    padding: '0.2rem 0.5rem',
-                    borderRadius: '4px'
-                  }}
-                >
-                  Supprimer
-                </button>
-              </li>
-            ))}
-          </ul>
-        )
-      }
+              </div>
+              <button
+                onClick={() => handleDelete(a.id)}
+                className="btn btn-danger btn-sm"
+              >
+                Supprimer
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

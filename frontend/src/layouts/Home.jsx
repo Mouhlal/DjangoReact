@@ -4,6 +4,7 @@ import FeaturedServices from './FeaturedServices'
 import About from './About'
 import Stats from './Stats'
 import Services from './Services'
+import Testimonials from './Testimonials'
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
        <About />
        <Stats />
        <Services />
+       <Testimonials />
    </div>
   )
 }
