@@ -13,6 +13,7 @@ import NotificationList from './components/Notifications/Notification';
 import Header from './layouts/Header';
 import Footer from './layouts/Footer';
 import Home from './layouts/Home';
+import NotFound from './layouts/NotFound';
 export default function App() {
     useEffect(() => {
       const script = document.createElement('script');
@@ -43,7 +44,7 @@ export default function App() {
         <Route path='/notifications' element={<AllNotifications />} />
         <Route path="/eleve/:id/notifications" element={<NotificationList />} />    
       
-        <Route path="*" element={<h1>Page non trouvée</h1>} />
+        <Route path="*" element={<NotFound />} />
         <Route path="/" element={<Home />} />
 
       </Routes>

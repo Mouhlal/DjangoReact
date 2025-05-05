@@ -17,7 +17,7 @@ const Header = () => {
             <li className="dropdown">
               <a href="#"><span>Gestion</span> <i className="bi bi-chevron-down toggle-dropdown"></i></a>
               <ul>
-                <li><a href="#">Eleves</a></li>
+                <li><a href="/eleves">Eleves</a></li>
                 <li className="dropdown">
                   <a href="http://127.0.0.1:8000/admin"><span>Admin</span> <i className="bi bi-chevron-down toggle-dropdown"></i></a>
                   <ul>

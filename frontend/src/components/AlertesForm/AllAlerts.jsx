@@ -28,27 +28,30 @@ export default function AllAlerts() {
 
   return (
     <div className="container mt-5">
-      <h2 className="mb-4">Toutes les alertes d’absence</h2>
-
-      {alertes.length === 0 ? (
-        <p>Aucune alerte enregistrée.</p>
-      ) : (
-        <div className="list-group">
-          {alertes.map(a => (
-            <div key={a.id} className="list-group-item d-flex justify-content-between align-items-center">
-              <div>
-                <strong>{a.date}</strong> – {a.nbr_absences} absences
-              </div>
-              <button
-                onClick={() => handleDelete(a.id)}
-                className="btn btn-danger btn-sm"
-              >
-                Supprimer
-              </button>
+    <h2 className="mb-4">Toutes les alertes d’absence</h2>
+  
+    {alertes.length === 0 ? (
+      <p>Aucune alerte enregistrée.</p>
+    ) : (
+      <div className="list-group">
+        {alertes.map(a => (
+          <div key={a.id} className="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>{a.eleve_nom}-{a.eleve_prenom} </strong> 
+              <br />
+              <strong>{a.date}</strong> – {a.nbr_absences} absences
             </div>
-          ))}
-        </div>
-      )}
-    </div>
+            <button
+              onClick={() => handleDelete(a.id)}
+              className="btn btn-danger btn-sm"
+            >
+              Supprimer
+            </button>
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+  
   );
 }

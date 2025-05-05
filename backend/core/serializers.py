@@ -60,9 +60,11 @@ class PresenceSerializer(serializers.ModelSerializer):
         ]
 
 class AlerteAbsenceSerializer(serializers.ModelSerializer):
+    eleve_nom = serializers.CharField(source='eleve.nom', read_only=True)
+    eleve_prenom = serializers.CharField(source='eleve.prenom', read_only=True)
     class Meta:
         model  = AlerteAbsence
-        fields = ['id', 'eleve', 'date', 'nbr_absences']
+        fields = ['id', 'eleve', 'date', 'nbr_absences', 'eleve_nom', 'eleve_prenom']
 
 class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
