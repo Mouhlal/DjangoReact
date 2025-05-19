@@ -25,8 +25,6 @@ export default function EleveDetails() {
 
   return (
     <div className="container mt-5">
-{/*       <h2 className="mb-4">Détails de l'élève</h2>
- */}
       <div className="mb-5">
         <h3>Alertes d'Absence</h3>
         {alertes.length ? (
@@ -42,7 +40,6 @@ export default function EleveDetails() {
         )}
       </div>
 
-      {/* Présences */}
       <div>
         <h3>Présences</h3>
         <table className="table table-bordered table-striped">
@@ -67,7 +64,6 @@ export default function EleveDetails() {
         </table>
       </div>
 
-      {/* Boutons d'actions */}
       <div className="mt-4">
         <Link to={`/eleve/${eleveId}/ajouter-presence`} className="btn btn-primary me-2">
           Ajouter une présence

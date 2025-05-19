@@ -2,21 +2,21 @@ import React from 'react';
 
 const services = [
   {
-    icon: 'bi-activity',
-    title: 'Lorem Ipsum',
-    text: 'Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi',
+    icon: 'bi-person-check',
+    title: 'Gestion des absences',
+    text: 'Suivi des absences des élèves avec des alertes et notifications en temps réel.',
     delay: 100,
   },
   {
-    icon: 'bi-bounding-box-circles',
-    title: 'Sed ut perspici',
-    text: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore',
+    icon: 'bi-journal-check',
+    title: 'Gestion des présences',
+    text: 'Enregistrement des présences et consultation de l\'historique par les enseignants et les élèves.',
     delay: 200,
   },
   {
-    icon: 'bi-calendar4-week',
-    title: 'Magni Dolores',
-    text: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia',
+    icon: 'bi-calendar-day',
+    title: 'Suivi des emplois du temps',
+    text: 'Consultation et gestion des emplois du temps des élèves et des enseignants.',
     delay: 300,
   },
 ];
@@ -51,4 +51,5 @@ const FeaturedServices = () => {
     </section>
   );
 };
+
 export default FeaturedServices;

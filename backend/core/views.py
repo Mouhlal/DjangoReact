@@ -3,6 +3,8 @@ from django.utils import timezone
 from datetime import timedelta
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.parsers import MultiPartParser, FormParser
+
 
 from .models import Eleve, Etude, Groupe, Presence, AlerteAbsence, Notification, RapportPDF , Matiere
 from .serializers import (
@@ -30,6 +32,7 @@ class GroupeViewSet(viewsets.ModelViewSet):
 class EleveViewSet(viewsets.ModelViewSet):
     queryset = Eleve.objects.all()
     serializer_class = EleveSerializer
+    parser_classes = (MultiPartParser, FormParser)
 
 class PresenceViewSet(viewsets.ModelViewSet):
     serializer_class = PresenceSerializer
@@ -67,14 +70,12 @@ class PresenceViewSet(viewsets.ModelViewSet):
                 date__gte=start_date
             ).count()
 
-            if abs_count >= 3:
-                # Créer ou mettre à jour l'alerte
+            if abs_count >= 5:
                 AlerteAbsence.objects.update_or_create(
                     eleve=presence.eleve,
                     date=presence.date,
                     defaults={'nbr_absences': abs_count}
                 )
-                # Créer une notification
                 Notification.objects.create(
                     eleve=presence.eleve,
                     message=(
@@ -118,3 +119,4 @@ class MatiereViewSet(viewsets.ModelViewSet):
         if filiere_id:
             qs = qs.filter(filiere_id=filiere_id)
         return qs
+    

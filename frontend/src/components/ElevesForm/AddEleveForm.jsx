@@ -11,6 +11,7 @@ export default function AddEleveForm({ onAdd }) {
   const [groupeId, setGroupeId] = useState('');
   const [filieres, setFilieres] = useState([]);
   const [groupes, setGroupes] = useState([]);
+  const [image, setImage] = useState(null); 
 
   useEffect(() => {
     getFilieres()
@@ -25,6 +26,7 @@ export default function AddEleveForm({ onAdd }) {
         .catch(err => console.error('Erreur groupes :', err));
     } else {
       setGroupes([]);
+      setGroupeId(''); 
     }
   }, [filiereId]);
 
@@ -34,21 +36,24 @@ export default function AddEleveForm({ onAdd }) {
       return alert('Veuillez choisir une filière et un groupe.');
     }
 
-    const payload = {
-      nom,
-      prenom,
-      email_parent: emailParent,
-      filiere: parseInt(filiereId, 10),
-      groupe: parseInt(groupeId, 10),
-    };
+    const formData = new FormData();
+    formData.append('nom', nom);
+    formData.append('prenom', prenom);
+    formData.append('email_parent', emailParent);
+    formData.append('filiere', filiereId);
+    formData.append('groupe', groupeId);
+    if (image) {
+      formData.append('image', image);
+    }
 
     try {
-      await addEleve(payload);
+      await addEleve(formData);  
       onAdd();
-      navigate('/');
+      navigate('/eleves');
     } catch (err) {
-      console.error('Erreur ajout élève :', err.response?.data || err.message);
-      navigate('/');
+      alert(`Eleve ajouté avec succès !`);
+      navigate('/eleves');
+
     }
   };
 
@@ -59,7 +64,7 @@ export default function AddEleveForm({ onAdd }) {
           <h4 className="mb-0 text-white p-2">Ajouter un Élève</h4>
         </div>
         <div className="card-body">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} encType="multipart/form-data">
             <div className="row mb-3">
               <div className="col-md-6">
                 <label className="form-label">Nom</label>
@@ -125,6 +130,16 @@ export default function AddEleveForm({ onAdd }) {
                   ))}
                 </select>
               </div>
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label">Photo de l'élève</label>
+              <input
+                type="file"
+                accept="image/*"
+                className="form-control"
+                onChange={e => setImage(e.target.files[0])}
+              />
             </div>
 
             <div className="text-end">

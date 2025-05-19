@@ -14,6 +14,7 @@ import Header from './layouts/Header';
 import Footer from './layouts/Footer';
 import Home from './layouts/Home';
 import NotFound from './layouts/NotFound';
+
 export default function App() {
     useEffect(() => {
       const script = document.createElement('script');
@@ -25,6 +26,7 @@ export default function App() {
         document.body.removeChild(script);
       };
     }, []);
+
   return (
     <BrowserRouter>
       <Header />
@@ -46,7 +48,6 @@ export default function App() {
       
         <Route path="*" element={<NotFound />} />
         <Route path="/" element={<Home />} />
-
       </Routes>
       <Footer />
     </BrowserRouter>

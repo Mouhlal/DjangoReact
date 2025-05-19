@@ -4,8 +4,9 @@ from .views import (
     EtudeViewSet, GroupeViewSet, EleveViewSet,
     PresenceViewSet, AlerteAbsenceViewSet,
     NotificationViewSet, RapportPDFViewSet ,
-    MatiereViewSet
+    MatiereViewSet 
 )
+
 
 router = DefaultRouter()
 router.register(r'etudes', EtudeViewSet)
@@ -20,3 +21,4 @@ router.register(r'matieres', MatiereViewSet)
 urlpatterns = [
     path('', include(router.urls)),
 ]
+

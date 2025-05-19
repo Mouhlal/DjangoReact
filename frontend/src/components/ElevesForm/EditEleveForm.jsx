@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getEleves, updateEleve, getFilieres, getGroupes } from '../../api/api';
+import { getEleves, updateEleve, getFilieres, getGroupes, getEleve } from '../../api/api';
 
 export default function EditEleveForm({ onEdit }) {
   const { id } = useParams();
@@ -13,6 +13,7 @@ export default function EditEleveForm({ onEdit }) {
   const [groupeId, setGroupeId] = useState('');
   const [filieres, setFilieres] = useState([]);
   const [groupes, setGroupes] = useState([]);
+  const [image, setImage] = useState(null); 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -23,9 +24,10 @@ export default function EditEleveForm({ onEdit }) {
 
   useEffect(() => {
     if (!filieres.length) return;
-    getEleves(id)
+    getEleve(id)
       .then(res => {
         const e = res.data;
+        console.log("Données élève reçues :", res.data);
         setNom(e.nom);
         setPrenom(e.prenom);
         setEmailParent(e.email_parent);
@@ -52,18 +54,21 @@ export default function EditEleveForm({ onEdit }) {
       return alert('Veuillez choisir une filière et un groupe.');
     }
 
-    const payload = {
-      nom,
-      prenom,
-      email_parent: emailParent,
-      filiere: parseInt(filiereId, 10),
-      groupe: parseInt(groupeId, 10),
-    };
+    const formData = new FormData();
+    formData.append('nom', nom);
+    formData.append('prenom', prenom);
+    formData.append('email_parent', emailParent);
+    formData.append('filiere', filiereId);
+    formData.append('groupe', groupeId);
+
+    if (image) {
+      formData.append('image', image);
+    }
 
     try {
-      await updateEleve(id, payload);
+      await updateEleve(id, formData);  
       onEdit?.();
-      navigate('/');
+      navigate('/eleves');
     } catch (err) {
       console.error('Erreur modification :', err.response?.data || err.message);
       alert('Échec de la modification');
@@ -79,7 +84,7 @@ export default function EditEleveForm({ onEdit }) {
           <h4 className="mb-0 text-white text-center">Modifier un élève</h4>
         </div>
         <div className="card-body">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} encType="multipart/form-data">
             <div className="mb-3">
               <label className="form-label">Nom :</label>
               <input
@@ -142,6 +147,16 @@ export default function EditEleveForm({ onEdit }) {
                   <option key={g.id} value={g.id}>{g.groupeName}</option>
                 ))}
               </select>
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label">Photo de l'élève (laisser vide pour garder l'actuelle) :</label>
+              <input
+                type="file"
+                accept="image/*"
+                className="form-control"
+                onChange={e => setImage(e.target.files[0])}
+              />
             </div>
 
             <div className="text-end">

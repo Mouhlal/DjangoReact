@@ -9,8 +9,9 @@ const Hero = () => {
             className="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center"
             data-aos="fade-up"
           >
-            <h1>Elegant and creative solutions</h1>
-            <p>We are team of talented designers making websites with Bootstrap</p>
+            <h1>Solutions innovantes pour Absencia</h1>
+            <p>Nous sommes une équipe de développeurs spécialisés dans la création d'applications web pour la gestion des absences, des présences et des alertes scolaires, avec des interfaces modernes et performantes.</p>
+
             <div className="d-flex">
               <a href="#about" className="btn-get-started">Get Started</a>
             </div>

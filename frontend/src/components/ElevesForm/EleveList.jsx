@@ -27,8 +27,7 @@ export default function EleveList() {
   return (
     <div className="container mt-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
-{/*         <h2>Liste des élèves</h2>
- */}        <Link to="/ajouter-eleve" className="btn btn-primary">Ajouter un élève</Link>
+       <Link to="/ajouter-eleve" className="btn btn-primary">Ajouter un élève</Link>
       </div>
 
       <div className="mb-3">
@@ -39,39 +38,42 @@ export default function EleveList() {
 
       <div className="table-responsive">
         <table className="table table-striped table-bordered align-middle table-hover">
-          <thead className="table-dark">
-            <tr>
-              <th>#</th>
-              <th>Nom</th>
-              <th>Prénom</th>
-              <th>Groupe</th>
-              <th>Filière</th>
-              <th className="text-center">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {eleves.map(e => (
-              <tr key={e.id}>
-                 <td>{e.id}</td>
-                <td>{e.nom}</td>
-                <td>{e.prenom}</td>
-                <td>{e.groupe_name}</td>
-                <td>{e.filiere_name}</td>
-                <td className="text-center">
-                  <Link to={`/eleve/${e.id}/alertes`} className="btn btn-warning btn-sm me-1">Alertes</Link>
-                  <Link to={`/eleve/${e.id}/notifications`} className="btn btn-info btn-sm me-1 text-white">Notifications</Link>
-                  <Link to={`/eleve/${e.id}`} className="btn btn-primary btn-sm me-1">Détails</Link>
-                  <Link to={`/modifier-eleve/${e.id}`} className="btn btn-success btn-sm me-1">Modifier</Link>
-                  <button
-                    onClick={() => handleDelete(e.id)}
-                    className="btn btn-danger btn-sm"
-                  >
-                    Supprimer
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+        <thead className="table-dark">
+  <tr>
+    <th>#</th>
+    <th>Photo</th> 
+    <th>Nom</th>
+    <th>Prénom</th>
+    <th>Groupe</th>
+    <th>Filière</th>
+    <th className="text-center">Actions</th>
+  </tr>
+</thead>
+<tbody>
+  {eleves.map(e => (
+    <tr key={e.id}>
+      <td>{e.id}</td>
+     <td>
+  {e.image ? (
+    <img src={e.image} alt={`${e.nom} ${e.prenom}`} style={{width: '50px', height: '50px', objectFit: 'cover', borderRadius: '5px'}} />
+  ) : '—'}
+</td>
+      <td>{e.nom}</td>
+      <td>{e.prenom}</td>
+      <td>{e.groupe_name}</td>
+      <td>{e.filiere_name}</td>
+      <td className="text-center">
+        <Link to={`/eleve/${e.id}/alertes`} className="btn btn-warning btn-sm me-1">Alertes</Link>
+        <Link to={`/eleve/${e.id}/notifications`} className="btn btn-info btn-sm me-1 text-white">Notifications</Link>
+        <Link to={`/eleve/${e.id}`} className="btn btn-primary btn-sm me-1">Détails</Link>
+        <Link to={`/modifier-eleve/${e.id}`} className="btn btn-success btn-sm me-1">Modifier</Link>
+        <button onClick={() => handleDelete(e.id)} className="btn btn-danger btn-sm">
+          Supprimer
+        </button>
+      </td>
+    </tr>
+  ))}
+</tbody>
         </table>
       </div>
     </div>
