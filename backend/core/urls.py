@@ -7,7 +7,6 @@ from .views import (
     MatiereViewSet 
 )
 
-
 router = DefaultRouter()
 router.register(r'etudes', EtudeViewSet)
 router.register(r'groupes', GroupeViewSet)

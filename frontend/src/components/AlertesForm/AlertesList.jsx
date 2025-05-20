@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getAlertes, deleteAlerte } from '../../api/api';
+ import Swal from 'sweetalert2';
 
 export default function AlerteList() {
   const { id: eleveId } = useParams();
@@ -13,20 +14,44 @@ export default function AlerteList() {
       .catch(err => console.error('Erreur récupération alertes :', err));
   };
 
-  // Charger les alertes au montage du composant
   useEffect(fetchAlertes, [eleveId]);
 
-  // Fonction de suppression d'une alerte
-  const handleDelete = async (alerteId) => {
-    if (!window.confirm('Supprimer cette alerte ?')) return;
+
+const handleDelete = async (alerteId) => {
+  const result = await Swal.fire({
+    title: 'Supprimer cette alerte ?',
+    text: 'Cette action est irréversible.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Oui, supprimer',
+    cancelButtonText: 'Annuler'
+  });
+
+  if (result.isConfirmed) {
     try {
       await deleteAlerte(alerteId);
       fetchAlertes();
+
+      Swal.fire({
+        title: 'Supprimée !',
+        text: 'L\'alerte a été supprimée avec succès.',
+        icon: 'success',
+        timer: 2000,
+        showConfirmButton: false
+      });
     } catch (err) {
       console.error('Erreur suppression alerte :', err);
-      alert('Impossible de supprimer l’alerte.');
+      Swal.fire({
+        title: 'Erreur',
+        text: 'Impossible de supprimer l’alerte.',
+        icon: 'error'
+      });
     }
-  };
+  }
+};
+
 
   return (
     <div className="container mt-5">

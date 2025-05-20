@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 export default function NotificationList() {
   const { id: eleveId } = useParams();
@@ -14,17 +15,42 @@ export default function NotificationList() {
       .catch(err => console.error('Erreur récupération notifications :', err));
   }, [eleveId]);
 
-  const handleDelete = async (notifId) => {
-    if (!window.confirm('Supprimer cette notification ?')) return;
 
+const handleDelete = async (notifId) => {
+  const result = await Swal.fire({
+    title: 'Supprimer cette notification ?',
+    text: 'Cette action est irréversible.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Oui, supprimer',
+    cancelButtonText: 'Annuler'
+  });
+
+  if (result.isConfirmed) {
     try {
       await axios.delete(`${url}${notifId}/`);
       setNotifs(prev => prev.filter(n => n.id !== notifId));
+
+      Swal.fire({
+        title: 'Supprimée !',
+        text: 'La notification a été supprimée avec succès.',
+        icon: 'success',
+        timer: 2000,
+        showConfirmButton: false
+      });
     } catch (err) {
       console.error('Erreur suppression notification :', err);
-      alert('Impossible de supprimer la notification.');
+      Swal.fire({
+        title: 'Erreur',
+        text: 'Impossible de supprimer la notification.',
+        icon: 'error'
+      });
     }
-  };
+  }
+};
+
 
   return (
     <div className="container mt-5">

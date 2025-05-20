@@ -16,14 +16,15 @@ class Groupe(models.Model):
         return self.groupeName
 
 
+
 class Eleve(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='eleve_profile', null=True, blank=True)
     nom = models.CharField(max_length=100)
     prenom = models.CharField(max_length=100)
     filiere = models.ForeignKey(Etude, on_delete=models.CASCADE, related_name='eleves')
     groupe = models.ForeignKey(Groupe, on_delete=models.CASCADE, related_name='eleves')
     email_parent = models.EmailField()
     image = models.ImageField(upload_to='eleves/', null=True, blank=True)
-
 
     def __str__(self):
         return f"{self.nom} {self.prenom}"
