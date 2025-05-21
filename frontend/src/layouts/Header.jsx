@@ -37,7 +37,7 @@ const Header = () => {
           <i className="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
 
-        <a className="btn-getstarted" href="#about">Get Started</a>
+        <a className="btn-getstarted" href="http://localhost:3000/#about">Get Started</a>
       </div>
     </header>
   );

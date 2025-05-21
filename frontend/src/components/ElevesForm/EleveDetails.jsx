@@ -27,6 +27,12 @@ export default function EleveDetails() {
     );
   }
 
+const totalAbsencesParMatiere = presences.filter(p => !p.present).reduce((acc, curr) => {
+    const matiereNom = curr.matiere.nom;
+    acc[matiereNom] = (acc[matiereNom] || 0) + 1;
+    return acc;
+  }, {});
+
   return (
     <div className="eleve-details-container">
       <div className="header-section">
@@ -115,13 +121,13 @@ export default function EleveDetails() {
         }
         
         .header-section h2 {
-          color: #2d3748;
+          color: white;
           font-size: 2rem;
           margin-bottom: 0.5rem;
         }
         
         .header-section p {
-          color: #64748b;
+          color : white;
           font-size: 1.1rem;
         }
         
@@ -159,6 +165,7 @@ export default function EleveDetails() {
         
         .card-header h3 {
           margin: 0;
+          color: white;
           font-size: 1.3rem;
         }
         
@@ -302,6 +309,39 @@ export default function EleveDetails() {
           }
         }
       `}</style>
+      <br /> <br />
+      <div className="card absences-summary-section">
+  <div className="card-header">
+    <h3>Total des Absences par Matière</h3>
+  </div>
+  <div className="card-body">
+    {Object.keys(totalAbsencesParMatiere).length > 0 ? (
+      <div className="table-responsive">
+        <table className="presence-table">
+          <thead>
+            <tr>
+              <th>Matière</th>
+              <th>Total d'Absences</th>
+            </tr>
+          </thead>
+          <tbody>
+            {Object.entries(totalAbsencesParMatiere).map(([matiere, total]) => (
+              <tr key={matiere}>
+                <td>{matiere}</td>
+                <td>
+                  <span className="badge">{total} absence(s)</span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    ) : (
+      <p>Aucune absence enregistrée.</p>
+    )}
+  </div>
+</div>
+
     </div>
   );
 }

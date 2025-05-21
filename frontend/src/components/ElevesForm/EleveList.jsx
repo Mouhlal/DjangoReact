@@ -134,6 +134,10 @@ const handleDelete = async (id) => {
                   <tr key={e.id}>
                     <td className="id-cell">{e.id}</td>
                     <td className="photo-cell">
+                       <Link 
+                          to={`/eleve/${e.id}`} 
+                          className=" btn-sm me-1"
+                        >
                       <div className="avatar-container">
                         {e.image ? (
                           <img 
@@ -147,6 +151,7 @@ const handleDelete = async (id) => {
                           </div>
                         )}
                       </div>
+                    </Link>
                     </td>
                     <td className="name-cell">{e.nom}</td>
                     <td className="name-cell">{e.prenom}</td>
