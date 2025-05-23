@@ -28,11 +28,22 @@ class GroupeViewSet(viewsets.ModelViewSet):
         if filiere_id:
             queryset = queryset.filter(filiere_id=filiere_id)
         return queryset
+    def eleves(self, request, pk=None):
+        eleves = Eleve.objects.filter(groupe_id=pk)
+        serializer = EleveSerializer(eleves, many=True)
+        return Response(serializer.data)
     
 class EleveViewSet(viewsets.ModelViewSet):
     queryset = Eleve.objects.all()
     serializer_class = EleveSerializer
     parser_classes = (MultiPartParser, FormParser)
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        groupe_id = self.request.query_params.get('groupe')
+        if groupe_id:
+            queryset = queryset.filter(groupe_id=groupe_id)
+        return queryset
 
 class PresenceViewSet(viewsets.ModelViewSet):
     serializer_class = PresenceSerializer

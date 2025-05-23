@@ -13,6 +13,7 @@ const Header = () => {
             <li><a href="#hero" className="active">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#services">Services</a></li>
+            <li><a href="/groupes">Groupes</a></li>
             <li><a href="/eleves">Eleves</a></li>
             <li className="dropdown">
               <a href="#"><span>Gestion</span> <i className="bi bi-chevron-down toggle-dropdown"></i></a>
@@ -23,7 +24,7 @@ const Header = () => {
                   <ul>
                     <li><a href="http://127.0.0.1:8000/admin/core/matiere/">Matieres</a></li>
                     <li><a href="http://127.0.0.1:8000/admin/core/etude/">Nv Scolaires</a></li>
-                    <li><a href="http://127.0.0.1:8000/admin/core/groupe/">Groupes</a></li>
+                    <li><a href="/eleves">Eleves</a></li>
                     <li><a href="http://127.0.0.1:8000/admin/core/presence/">Presences</a></li>
                     <li><a href="http://127.0.0.1:8000/admin/core/rapportabsence/">Rapport</a></li>
                   </ul>

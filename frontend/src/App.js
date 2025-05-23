@@ -14,6 +14,8 @@ import Header from './layouts/Header';
 import Footer from './layouts/Footer';
 import Home from './layouts/Home';
 import NotFound from './layouts/NotFound';
+import Groupes from './components/ElevesForm/Groupes';
+import ElevebyGroupe from './components/ElevesForm/ElevebyGroupe';
 
 export default function App() {
     useEffect(() => {
@@ -31,6 +33,9 @@ export default function App() {
     <BrowserRouter>
       <Header />
       <Routes>
+        <Route path="/groupes" element={<Groupes />} />
+        <Route path="/groupes/:groupeId/eleves" element={<ElevebyGroupe />} />
+
         <Route path="/eleves" element={<EleveList />} />
         <Route path="ajouter-eleve/" element={<AddEleveForm />} />
         <Route path="/modifier-eleve/:id" element={<EditEleveForm />} />

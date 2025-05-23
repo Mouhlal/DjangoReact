@@ -5,11 +5,12 @@ const API = axios.create({ baseURL: 'http://localhost:8000/api/' });
 export const getEleves = () => API.get('eleves/');
 export const getEleveDetail = (eleveId) => API.get(`eleves/${eleveId}/`);
 export const getEleve = (id) => API.get(`eleves/${id}/`);
-
 export const updateEleve  = (id, data) => API.put(`eleves/${id}/`, data);
 export const deleteEleve = (id)   => API.delete(`eleves/${id}/`);
 export const addEleve    = (eleveData) => API.post('eleves/', eleveData); 
 
+export const getElevesByGroupe = (groupeId) =>
+  API.get(`eleves/?groupe=${groupeId}`);
 
 export const getFilieres = () => API.get('etudes/');
 export const getGroupes   = (filiereId) => {
@@ -17,6 +18,8 @@ export const getGroupes   = (filiereId) => {
     const url = filiereId ? `groupes/?filiere_id=${filiereId}` : 'groupes/';
     return API.get(url);
   };
+
+  
 export const getMatieres = (filiereId) => {
   const url = filiereId
     ? `matieres/?filiere_id=${filiereId}`
