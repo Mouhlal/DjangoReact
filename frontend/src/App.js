@@ -82,7 +82,6 @@ export default function App() {
 
         <Route path="/" element={<Home />} />
 
-        {/* Routes protégées par authentification */}
         {user ? (
           <>
             {/* Routes pour les admins et users normaux */}

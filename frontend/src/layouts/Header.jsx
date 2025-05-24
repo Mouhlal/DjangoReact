@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { FaUser, FaSignOutAlt, FaHome, FaUsers, FaChalkboardTeacher, FaBell, FaExclamationTriangle } from 'react-icons/fa';
 
@@ -13,13 +13,11 @@ const Header = ({ user, onLogout }) => {
   return (
     <header className="artistic-header-white">
       <div className="header-container">
-        {/* Logo Absencia artistique à gauche */}
         <Link to="/" className="logo-artistic-minimal">
           <span className="logo-a">A</span>
           <span className="logo-rest">bsencia</span>
         </Link>
 
-        {/* Navigation horizontale à droite */}
         <div className="right-section">
           <nav className="horizontal-nav">
             <ul className="nav-list-horizontal">
@@ -31,11 +29,6 @@ const Header = ({ user, onLogout }) => {
               
               {user && (
                 <>
-                  <li>
-                    <NavLink to="/groupes" className={({ isActive }) => isActive ? 'active' : ''}>
-                      <FaUsers className="nav-icon" /> <span>Groupes</span>
-                    </NavLink>
-                  </li>
                   
                   {(user.role === 'admin' || user.role === 'user') && (
                     <li>
@@ -44,8 +37,15 @@ const Header = ({ user, onLogout }) => {
                       </NavLink>
                     </li>
                   )}
-                  
-                  <li className="dropdown-horizontal">
+                  {(user.role === 'admin' || user.role === 'user') && (
+                  <li>
+                    <NavLink to="/groupes" className={({ isActive }) => isActive ? 'active' : ''}>
+                      <FaUsers className="nav-icon" /> <span>Groupes</span>
+                    </NavLink>
+                  </li>
+                  )}
+                  {(user.role === 'admin' || user.role === 'user') && (
+                   <li className="dropdown-horizontal">
                     <a href="#" className="dropdown-toggle">
                       <FaExclamationTriangle className="nav-icon" /> <span>Gestion</span>
                     </a>
@@ -53,25 +53,26 @@ const Header = ({ user, onLogout }) => {
                       <div className="dropdown-column">
                         {user.role === 'admin' && (
                           <>
-                            <NavLink to="/admin/eleves" className="dropdown-item">
-                              Gestion Élèves
-                            </NavLink>
-                            <a href="http://127.0.0.1:8000/admin/core/matiere/" target="_blank" rel="noopener noreferrer" className="dropdown-item">
+                          {/*   <a href="http://127.0.0.1:8000/admin/core/matiere/" target="_blank" rel="noopener noreferrer" className="dropdown-item">
                               Matières
+                            </a> */}
+                              <a href="/presences"className="dropdown-item">
+                              Presences
                             </a>
                           </>
                         )}
                         <NavLink to="/alertes" className="dropdown-item">
                           <FaExclamationTriangle className="dropdown-icon" /> Alertes
                         </NavLink>
-                      </div>
-                      <div className="dropdown-column">
-                        <NavLink to="/notifications" className="dropdown-item">
+                           <NavLink to="/notifications" className="dropdown-item">
                           <FaBell className="dropdown-icon" /> Notifications
                         </NavLink>
                       </div>
                     </div>
                   </li>
+                  )}
+                  
+                 
                 </>
               )}
             </ul>
@@ -85,9 +86,9 @@ const Header = ({ user, onLogout }) => {
                   <FaUser className="user-icon" /> <span>{user.username}</span>
                 </button>
                 <div className="user-dropdown-menu-horizontal">
-                  <NavLink to="/profile" className="dropdown-item">
-                    Mon Profil
-                  </NavLink>
+                {/*   <Link to={`/eleve/${eleves.id}`} className="dropdown-item">
+                    <FaUser className="dropdown-icon" /> Mon Profil
+                  </Link> */}
                   <button onClick={handleLogout} className="dropdown-item logout">
                     <FaSignOutAlt /> Déconnexion
                   </button>
