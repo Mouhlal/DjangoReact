@@ -6,6 +6,7 @@ from .views import (
     NotificationViewSet, RapportPDFViewSet ,
     MatiereViewSet 
 )
+from .views import register_view, login_view, logout_view 
 
 router = DefaultRouter()
 router.register(r'etudes', EtudeViewSet)
@@ -19,5 +20,8 @@ router.register(r'matieres', MatiereViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('register/', register_view, name='register'),
+    path('login/', login_view, name='login'),
+    path('logout/', logout_view, name='logout'),
 ]
 

@@ -1,6 +1,11 @@
 from rest_framework import serializers
-from .models import Eleve, Etude, Groupe, Presence, AlerteAbsence, Notification, RapportPDF , Matiere
+from .models import Eleve, Etude, Groupe, Presence, AlerteAbsence, Notification, RapportPDF , Matiere 
+from django.contrib.auth.models import User
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'is_admin', 'is_eleve')
 class EtudeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Etude
@@ -69,3 +74,4 @@ class RapportPDFSerializer(serializers.ModelSerializer):
     class Meta:
         model  = RapportPDF
         fields = ['id', 'eleve', 'fichier_pdf','date_creation']
+

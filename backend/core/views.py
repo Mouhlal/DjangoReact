@@ -2,9 +2,11 @@ from rest_framework import viewsets
 from django.utils import timezone
 from datetime import timedelta
 from rest_framework.response import Response
-from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
-
+from django.contrib.auth import login, logout
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import AuthenticationForm
+from .forms import EleveRegisterForm
 
 from .models import Eleve, Etude, Groupe, Presence, AlerteAbsence, Notification, RapportPDF , Matiere
 from .serializers import (
@@ -131,3 +133,30 @@ class MatiereViewSet(viewsets.ModelViewSet):
             qs = qs.filter(filiere_id=filiere_id)
         return qs
     
+
+
+def register_view(request):
+    if request.method == 'POST':
+        form = EleveRegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('http://localhost:3000')  
+    else:
+        form = EleveRegisterForm()
+    return render(request, 'register.html', {'form': form})
+
+def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('http://localhost:3000')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'login.html', {'form': form})
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')

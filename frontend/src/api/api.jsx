@@ -14,7 +14,6 @@ export const getElevesByGroupe = (groupeId) =>
 
 export const getFilieres = () => API.get('etudes/');
 export const getGroupes   = (filiereId) => {
-    // si filiereId n'est pas passé, renvoie tous les groupes
     const url = filiereId ? `groupes/?filiere_id=${filiereId}` : 'groupes/';
     return API.get(url);
   };
@@ -40,4 +39,5 @@ export const getAllAlertes  = ()        => API.get('alertes/');
 export const getNotifications    = (eleveId) => API.get(`notifications/?eleve=${eleveId}`);
 export const deleteNotification  = (id)      => API.delete(`notifications/${id}/`);
 export const getAllNotifications = ()        => API.get('notifications/');
+
 

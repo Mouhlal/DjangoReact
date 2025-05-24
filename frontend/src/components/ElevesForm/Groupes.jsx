@@ -40,19 +40,27 @@ export default function Groupes() {
           <h1>Gestion des Groupes</h1>
           <p>Explorez et gérez tous les groupes d'étudiants</p>
         </div>
-          <div className="filiere-filter">
-    <select
-      value={selectedFiliere}
-      onChange={(e) => setSelectedFiliere(e.target.value)}
-    >
-      <option value="">Toutes les filières</option>
-{filiere && filiere.map((filiere) => (
-        <option key={filiere.id} value={filiere.id}>
-          {filiere.filiere}
-        </option>
-      ))}
-    </select>
-  </div>
+        <div className="filiere-filter">
+  <select
+    className="simple-select"
+    value={selectedFiliere}
+    onChange={(e) => setSelectedFiliere(e.target.value)}
+  >
+    <option value="">Toutes les filières</option>
+    {filiere && filiere.map((filiere) => (
+      <option key={filiere.id} value={filiere.id}>{filiere.filiere}</option>
+    ))}
+  </select>
+</div>
+
+<style jsx>{`
+  .simple-select {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+`}</style>
 
       </div>
 
