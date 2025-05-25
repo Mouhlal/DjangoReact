@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/50c8e28d-5f8b-4cde-a7df-5dd7a66b0150)📘 Absencia
+📘 Absencia
 
 **Absencia** est une application web complète pour la **gestion des absences scolaires**. Elle permet de suivre les présences des élèves, de générer des rapports d’absences, et d’alerter automatiquement les parents en cas d’absences répétées.
 
