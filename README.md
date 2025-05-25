@@ -79,6 +79,6 @@ npm start
 
 ## 👨‍💻 Auteur
 
-* Mouhlal Ayoub
+* Mouhlal Akram
 
 
