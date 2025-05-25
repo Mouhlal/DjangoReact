@@ -18,7 +18,6 @@ import Groupes from './components/ElevesForm/Groupes';
 import ElevebyGroupe from './components/ElevesForm/ElevebyGroupe';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
-import Unauthorized from './layouts/Unauthorized';
 import Loading from './layouts/Loading';
 
 export default function App() {
@@ -60,7 +59,6 @@ export default function App() {
     setUser(null);
   };
 
-  // Fonction de vérification des rôles
   const hasRole = (requiredRole) => {
     if (!user) return false;
     if (user.role === 'admin') return true; // Les admins ont accès à tout
@@ -78,7 +76,6 @@ export default function App() {
       <Routes>
         <Route path="/login" element={user ? <Navigate to="/" /> : <Login onLogin={handleLogin} />} />
         <Route path="/register" element={user ? <Navigate to="/" /> : <Register onRegister={handleRegister} />} />
-        <Route path="/unauthorized" element={<Unauthorized />} />
 
         <Route path="/" element={<Home />} />
 
